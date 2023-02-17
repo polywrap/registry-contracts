@@ -12,16 +12,12 @@ error VersionAlreadyPublished();
 error TooManyIdentifiers();
 //Identifiers must satisfy [0-9A-Za-z-]+
 error InvalidIdentifier();
+error OnlyPackageOwner();
 
 abstract contract VersionRegistry is PackageRegistry, IVersionRegistry {
   mapping(bytes32 => string) public versionLocations;
 
   constructor() {
-    initialize();
-  }
-
-  function initialize() public initializer {
-    __Ownable_init();
   }
 
   /**
@@ -29,7 +25,7 @@ abstract contract VersionRegistry is PackageRegistry, IVersionRegistry {
    * @param packageId The ID of a package.
    * @param versionBytes The encoded bytes of a version string.
    * @param location The location where the contents of this package version are stored.
-   * @return ID of the published version.
+   * @return versionId ID of the published version.
    */
   function publishVersion(
     bytes32 packageId,
@@ -40,7 +36,7 @@ abstract contract VersionRegistry is PackageRegistry, IVersionRegistry {
 			revert OnlyPackageOwner();
 		}
 
-    bytes32 versionId = keccak256(abi.encodePacked(packageId, versionBytes));
+    versionId = keccak256(abi.encodePacked(packageId, versionBytes));
 
     string memory existingLocation = versionLocations[versionId];
     
@@ -65,6 +61,6 @@ abstract contract VersionRegistry is PackageRegistry, IVersionRegistry {
   }
 
   function versionExists(bytes32 versionId) public virtual override view returns (bool) {
-    return bytes(versionLocations[versionId]).length;
+    return bytes(versionLocations[versionId]).length != 0;
   }
 }

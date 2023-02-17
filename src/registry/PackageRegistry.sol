@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
+import {Ownable} from "openzeppelin/access/Ownable.sol";
 import {IPackageRegistry} from "./interfaces/IPackageRegistry.sol";
 
 error OnlyOrganizationOwner();
 error OnlyOrganizationController();
 error PackageAlreadyExists();
 error OnlyPackageOwner();
-error OnlyPackageController();
 
-abstract contract PackageRegistryV1 is Ownable, IPackageRegistry {
+abstract contract PackageRegistry is Ownable, IPackageRegistry {
   
   struct Organization {
     bool exists;
@@ -26,8 +26,6 @@ abstract contract PackageRegistryV1 is Ownable, IPackageRegistry {
 
   function claimOrganization(bytes32 _organizationId, address _owner) internal {
 		if(!organizations[_organizationId].exists) {
-			organizationList.push(_organizationId);
-
 			organizations[_organizationId].exists = true;
 		}
 
@@ -69,7 +67,6 @@ abstract contract PackageRegistryV1 is Ownable, IPackageRegistry {
 		
 		packages[packageId].exists = true;
 		packages[packageId].organizationId = _organizationId;
-		organizations[organizationId].packageList.push(packageId);
 
 		emit PackageRegistered(
 			_organizationId, 
@@ -89,10 +86,10 @@ abstract contract PackageRegistryV1 is Ownable, IPackageRegistry {
   }
 
   function transferPackageOwnership(
-    bytes32 packageId,
-    address newOwner
-  ) public virtual override onlyPackageOwner(packageId) {
-    _setPackageOwner(packageId, newOwner);
+    bytes32 _packageId,
+    address _newOwner
+  ) public virtual override onlyPackageOwner(_packageId) {
+    _setPackageOwner(_packageId, _newOwner);
   }
 
   function _setPackageOwner(
@@ -100,7 +97,7 @@ abstract contract PackageRegistryV1 is Ownable, IPackageRegistry {
     address _newOwner
   ) private {
     address previousOwner = packages[_packageId].owner;
-    packages[packageId].owner = _newOwner;
+    packages[_packageId].owner = _newOwner;
 
     emit PackageOwnerChanged(
       _packageId, 
