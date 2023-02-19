@@ -4,11 +4,6 @@ pragma solidity ^0.8.17;
 import {Ownable} from "openzeppelin/access/Ownable.sol";
 import {IPackageRegistry} from "./interfaces/IPackageRegistry.sol";
 
-error OnlyOrganizationOwner();
-error OnlyOrganizationController();
-error PackageAlreadyExists();
-error OnlyPackageOwner();
-
 abstract contract PackageRegistry is Ownable, IPackageRegistry {
     struct Organization {
         bool exists;

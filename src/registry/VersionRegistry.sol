@@ -4,17 +4,6 @@ pragma solidity ^0.8.17;
 import {IVersionRegistry} from "./interfaces/IVersionRegistry.sol";
 import {PackageRegistry} from "./PackageRegistry.sol";
 
-//Version requires at least major, minor and patch identifiers specified
-error VersionNotFullLength();
-//Major, minor and patch are release identifiers and they must be numeric (not alphanumeric)
-error ReleaseIdentifierMustBeNumeric();
-error VersionAlreadyPublished();
-//Max count of identifiers is 16
-error TooManyIdentifiers();
-//Identifiers must satisfy [0-9A-Za-z-]+
-error InvalidIdentifier();
-error OnlyPackageOwner();
-
 abstract contract VersionRegistry is PackageRegistry, IVersionRegistry {
     mapping(bytes32 => string) public versionLocations;
 

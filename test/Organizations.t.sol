@@ -3,6 +3,7 @@ pragma solidity ^0.8.17;
 
 import {Test} from "forge-std/Test.sol";
 import {PolywrapRegistry} from "../src/registry/PolywrapRegistry.sol";
+import {IPackageRegistry} from "../src/registry/interfaces/IPackageRegistry.sol";
 
 contract OrganizationsTest is Test {
     PolywrapRegistry private registry;
@@ -56,5 +57,17 @@ contract OrganizationsTest is Test {
         (, address _owner) = registry.organization(organizationId);
         
         assertEq(_owner, secondOwner);
+    }
+
+    function testForbidsNonOwnerToTransferOrganizationOwnership() public {
+        bytes32 organizationId = keccak256(abi.encodePacked("test"));
+        address firstOwner = address(0x1);    
+        address secondOwner = address(0x2);    
+
+        registry.claimOrganization(organizationId, firstOwner);
+
+        vm.prank(secondOwner);
+        vm.expectRevert(IPackageRegistry.OnlyOrganizationOwner.selector);
+        registry.transferOrganizationOwnership(organizationId, secondOwner);
     }
 }

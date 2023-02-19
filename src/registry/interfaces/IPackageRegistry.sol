@@ -2,6 +2,11 @@
 pragma solidity ^0.8.17;
 
 interface IPackageRegistry {
+    error OnlyOrganizationOwner();
+    error OnlyOrganizationController();
+    error PackageAlreadyExists();
+    error OnlyPackageOwner();
+
     event OrganizationClaimed(bytes32 indexed organizationId, address indexed owner);
     event OrganizationOwnerChanged(
         bytes32 indexed organizationId, address indexed previousOwner, address indexed newOwner
