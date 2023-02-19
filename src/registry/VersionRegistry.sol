@@ -32,11 +32,7 @@ abstract contract VersionRegistry is PackageRegistry, IVersionRegistry {
             revert VersionAlreadyPublished();
         }
 
-        uint8 identifierCnt = uint8(versionBytes[0]);
-
-        if (identifierCnt > 65) {
-            revert TooManyIdentifiers();
-        }
+        versionLocations[versionId] = location;
 
         emit VersionPublished(packageId, versionId, versionBytes, location);
 
@@ -45,5 +41,9 @@ abstract contract VersionRegistry is PackageRegistry, IVersionRegistry {
 
     function versionExists(bytes32 versionId) public view virtual override returns (bool) {
         return bytes(versionLocations[versionId]).length != 0;
+    }
+
+    function versionLocation(bytes32 versionId) public view virtual override returns (string memory) {
+        return versionLocations[versionId];
     }
 }

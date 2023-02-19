@@ -18,5 +18,5 @@ interface IVersionRegistry {
         external
         returns (bytes32 versionId);
     function versionExists(bytes32 versionId) external view returns (bool);
-    function versionLocations(bytes32 versionId) external view returns (string memory location);
+    function versionLocation(bytes32 versionId) external view returns (string memory location);
 }
