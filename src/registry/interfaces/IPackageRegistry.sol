@@ -12,7 +12,11 @@ interface IPackageRegistry {
         bytes32 indexed organizationId, address indexed previousOwner, address indexed newOwner
     );
     event PackageRegistered(
-        bytes32 indexed organizationId, bytes32 indexed packageId, string indexed packageNameIndexed, string packageName, address packageOwner
+        bytes32 indexed organizationId,
+        bytes32 indexed packageId,
+        string indexed packageNameIndexed,
+        string packageName,
+        address packageOwner
     );
     event PackageOwnerChanged(bytes32 packageId, address indexed previousOwner, address indexed newOwner);
 

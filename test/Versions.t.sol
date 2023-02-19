@@ -56,7 +56,7 @@ contract VersionsTest is Test {
     function testForbidsNonPackageOwnerToPublishVersion() public {
         bytes memory versionBytes = abi.encodePacked("testVersion");
         string memory location = "testLocation";
-        address impostor = address(0x3);    
+        address impostor = address(0x3);
 
         vm.prank(impostor);
         vm.expectRevert(IPackageRegistry.OnlyPackageOwner.selector);

@@ -26,38 +26,38 @@ contract OrganizationsTest is Test {
         registry.claimOrganization(organizationId, owner);
 
         (bool exists, address _owner) = registry.organization(organizationId);
-        
+
         assertEq(exists, true);
         assertEq(_owner, owner);
 
         exists = registry.organizationExists(organizationId);
-        
+
         assertEq(exists, true);
 
         _owner = registry.organizationOwner(organizationId);
-        
+
         assertEq(_owner, owner);
     }
 
     function testCanTransferOrganizationOwnership() public {
         bytes32 organizationId = keccak256(abi.encodePacked("test"));
-        address firstOwner = address(0x1);    
-        address secondOwner = address(0x2);    
+        address firstOwner = address(0x1);
+        address secondOwner = address(0x2);
 
         registry.claimOrganization(organizationId, firstOwner);
 
         vm.prank(firstOwner);
         registry.transferOrganizationOwnership(organizationId, secondOwner);
-        
+
         address owner = registry.organizationOwner(organizationId);
-        
+
         assertEq(owner, secondOwner);
     }
 
     function testForbidsNonOwnerToTransferOrganizationOwnership() public {
         bytes32 organizationId = keccak256(abi.encodePacked("test"));
-        address firstOwner = address(0x1);    
-        address secondOwner = address(0x2);    
+        address firstOwner = address(0x1);
+        address secondOwner = address(0x2);
 
         registry.claimOrganization(organizationId, firstOwner);
 

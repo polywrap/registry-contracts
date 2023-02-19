@@ -30,7 +30,7 @@ contract PackagesTest is Test {
     function testForbidsNonOrganizationOwnerToRegisterPackage() public {
         string memory packageName = "testPackage";
         address packageOwner = address(0x2);
-        address impostor = address(0x3);   
+        address impostor = address(0x3);
 
         vm.prank(impostor);
         vm.expectRevert(IPackageRegistry.OnlyOrganizationOwner.selector);
@@ -67,25 +67,25 @@ contract PackagesTest is Test {
     function testCanTransferPackageOwnership() public {
         string memory packageName = "testPackage";
         bytes32 packageId = keccak256(abi.encodePacked(organizationId, packageName));
-        address firstOwner = address(0x2);    
-        address secondOwner = address(0x3);    
+        address firstOwner = address(0x2);
+        address secondOwner = address(0x3);
 
         vm.prank(organizationOwner);
         registry.registerPackage(organizationId, packageName, firstOwner);
 
         vm.prank(firstOwner);
         registry.transferPackageOwnership(packageId, secondOwner);
-        
+
         address owner = registry.packageOwner(packageId);
-        
+
         assertEq(owner, secondOwner);
     }
 
     function testForbidsNonOwnerToTransferOrganizationOwnership() public {
         string memory packageName = "testPackage";
         bytes32 packageId = keccak256(abi.encodePacked(organizationId, packageName));
-        address firstOwner = address(0x2);    
-        address secondOwner = address(0x3);    
+        address firstOwner = address(0x2);
+        address secondOwner = address(0x3);
 
         vm.prank(organizationOwner);
         registry.registerPackage(organizationId, packageName, firstOwner);
