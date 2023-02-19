@@ -42,7 +42,7 @@ abstract contract PackageRegistry is Ownable, IPackageRegistry {
         emit OrganizationOwnerChanged(_organizationId, previousOwner, _newOwner);
     }
 
-    function registerPackage(bytes32 _organizationId, bytes32 _packageName, address _packageOwner)
+    function registerPackage(bytes32 _organizationId, string memory _packageName, address _packageOwner)
         public
         virtual
         override
@@ -57,7 +57,7 @@ abstract contract PackageRegistry is Ownable, IPackageRegistry {
         packages[packageId].exists = true;
         packages[packageId].organizationId = _organizationId;
 
-        emit PackageRegistered(_organizationId, packageId, _packageName, _packageOwner);
+        emit PackageRegistered(_organizationId, packageId, _packageName, _packageName, _packageOwner);
 
         _setPackageOwner(packageId, _packageOwner);
     }

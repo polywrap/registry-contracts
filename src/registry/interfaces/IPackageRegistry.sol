@@ -12,12 +12,12 @@ interface IPackageRegistry {
         bytes32 indexed organizationId, address indexed previousOwner, address indexed newOwner
     );
     event PackageRegistered(
-        bytes32 indexed organizationId, bytes32 indexed packageId, bytes32 indexed packageName, address packageOwner
+        bytes32 indexed organizationId, bytes32 indexed packageId, string indexed packageNameIndexed, string packageName, address packageOwner
     );
     event PackageOwnerChanged(bytes32 packageId, address indexed previousOwner, address indexed newOwner);
 
     function transferOrganizationOwnership(bytes32 organizationId, address newOwner) external;
-    function registerPackage(bytes32 organizationId, bytes32 packageName, address packageOwner) external;
+    function registerPackage(bytes32 organizationId, string memory packageName, address packageOwner) external;
     function setPackageOwner(bytes32 packageId, address newOwner) external;
     function transferPackageOwnership(bytes32 packageId, address newOwner) external;
     function organizationOwner(bytes32 organizationId) external view returns (address);

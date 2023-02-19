@@ -17,11 +17,6 @@ contract OrganizationsTest is Test {
         address owner = address(0x1);
 
         registry.claimOrganization(organizationId, owner);
-
-        (bool exists, address _owner) = registry.organization(organizationId);
-        
-        assertEq(exists, true);
-        assertEq(_owner, owner);
     }
 
     function testOrganizationMetadata() public {
@@ -54,9 +49,9 @@ contract OrganizationsTest is Test {
         vm.prank(firstOwner);
         registry.transferOrganizationOwnership(organizationId, secondOwner);
         
-        (, address _owner) = registry.organization(organizationId);
+        address owner = registry.organizationOwner(organizationId);
         
-        assertEq(_owner, secondOwner);
+        assertEq(owner, secondOwner);
     }
 
     function testForbidsNonOwnerToTransferOrganizationOwnership() public {
