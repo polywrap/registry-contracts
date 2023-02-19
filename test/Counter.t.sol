@@ -5,7 +5,6 @@ import {Test} from "forge-std/Test.sol";
 import {PolywrapRegistry} from "../src/registry/PolywrapRegistry.sol";
 
 contract RegistryTest is Test {
-    
     PolywrapRegistry private registry;
 
     function setUp() public {
