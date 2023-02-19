@@ -3,11 +3,15 @@ pragma solidity ^0.8.17;
 
 import {IVersionRegistry} from "./interfaces/IVersionRegistry.sol";
 import {PackageRegistry} from "./PackageRegistry.sol";
+import {MerkleTreeManager} from "./MerkleTreeManager.sol";
 
 abstract contract VersionRegistry is PackageRegistry, IVersionRegistry {
     mapping(bytes32 => string) public versionLocations;
+    MerkleTreeManager public merkleTreeManager;
 
-    constructor() {}
+    constructor(MerkleTreeManager _merkleTreeManager) {
+        merkleTreeManager = _merkleTreeManager;
+    }
 
     /**
      * @dev Publish a new version of a package.
@@ -34,6 +38,8 @@ abstract contract VersionRegistry is PackageRegistry, IVersionRegistry {
 
         versionLocations[versionId] = location;
 
+        merkleTreeManager.publishLeaf(keccak256(abi.encodePacked(versionId, location)));
+
         emit VersionPublished(packageId, versionId, versionBytes, location);
 
         return versionId;
@@ -45,5 +51,9 @@ abstract contract VersionRegistry is PackageRegistry, IVersionRegistry {
 
     function versionLocation(bytes32 versionId) public view virtual override returns (string memory) {
         return versionLocations[versionId];
+    }
+
+    function root() public view virtual override returns (bytes32) {
+        return merkleTreeManager.calculateMerkleRoot();
     }
 }
