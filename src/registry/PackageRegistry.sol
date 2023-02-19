@@ -24,12 +24,12 @@ abstract contract PackageRegistry is Ownable, IPackageRegistry {
   mapping(bytes32 => Organization) organizations;
   mapping(bytes32 => Package) packages;
 
-  function claimOrganization(bytes32 _organizationId, address _owner) internal {
-		if(!organizations[_organizationId].exists) {
-			organizations[_organizationId].exists = true;
-		}
+  function claimOrganization(bytes32 _organizationId, address _owner) public {
+    if(!organizations[_organizationId].exists) {
+        organizations[_organizationId].exists = true;
+    }
 
-		address previousOwner = organizations[_organizationId].owner;
+    address previousOwner = organizations[_organizationId].owner;
     organizations[_organizationId].owner = _owner;
 
     emit OrganizationOwnerChanged(
@@ -42,7 +42,7 @@ abstract contract PackageRegistry is Ownable, IPackageRegistry {
   function transferOrganizationOwnership(bytes32 _organizationId, address _newOwner) 
     public virtual override onlyOrganizationOwner(_organizationId) {
 
-		address previousOwner = organizations[_organizationId].owner;
+	address previousOwner = organizations[_organizationId].owner;
     organizations[_organizationId].owner = _newOwner;
 
     emit OrganizationOwnerChanged(
