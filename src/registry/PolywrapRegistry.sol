@@ -6,6 +6,5 @@ import {VersionRegistry} from "./VersionRegistry.sol";
 import {MerkleTreeManager} from "./MerkleTreeManager.sol";
 
 contract PolywrapRegistry is PackageRegistry, VersionRegistry {
-    constructor() VersionRegistry(new MerkleTreeManager(address(this))) {
-    }
+    constructor() VersionRegistry(new MerkleTreeManager(address(this))) {}
 }
